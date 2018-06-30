@@ -5,14 +5,12 @@ IMAGE_NAME="andreburto/jupyter1"
 
 cd $(dirname $0)
 
-if [ $(docker image ls $IMAGE_NAME | grep $IMAGE_NAME) == "" ]; then
-    if [ -f Dockerfile ]; then
-        docker build . -t $IMAGE_NAME:latest
-    else
-        echo "Dockerfile missing."
-        exit 1
-    fi
+if [ !-f $(pwd)/Dockerfile ]; then
+  echo "Dockerfile missing."
+  exit 1
 fi
+
+docker build . -t $IMAGE_NAME:latest
 
 mkdir -p notebook
 
