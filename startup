@@ -5,7 +5,7 @@ IMAGE_NAME="andreburto/jupyter1"
 
 cd $(dirname $0)
 
-if [ !-f $(pwd)/Dockerfile ]; then
+if [ ! -f $(pwd)/Dockerfile ]; then
   echo "Dockerfile missing."
   exit 1
 fi

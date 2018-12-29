@@ -12,4 +12,4 @@ RUN apk add --no-cache make gcc g++ && \
 EXPOSE 8888
 
 # Run app.py when the container launches
-CMD ["jupyter", "notebook", "-y", "--no-browser", "--ip", "0.0.0.0", "--allow-root"]
+CMD ["jupyter", "notebook", "-y", "--no-browser", "--ip", "0.0.0.0", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
