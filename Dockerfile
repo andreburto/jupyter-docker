@@ -1,10 +1,13 @@
 # Use an official Python runtime as a parent image
-FROM python:3.6-alpine
+FROM python:3.7-alpine
 
 WORKDIR /notebook
 
 # Install any needed packages specified in requirements.txt
-RUN apk add --no-cache make gcc g++ && \
+RUN apk update && \
+    apk add --no-cache make gcc g++ libgcc libstdc++ libsodium musl libzmq zeromq-dev linux-headers && \
+    pip install --upgrade pip && \
+    pip install pyzmq --install-option="--zmq=bundled" && \
     pip install jupyter requests bs4 boto3 && \
     jupyter notebook -y --no-browser --generate-config --allow-root
 
