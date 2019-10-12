@@ -4,7 +4,8 @@ FROM python:3.6-alpine
 WORKDIR /notebook
 
 # Install any needed packages specified in requirements.txt
-RUN apk add --no-cache make gcc g++ && \
+RUN apk add --no-cache make gcc g++ python3-dev linux-headers zeromq-dev && \
+    pip install --upgrade pip && \
     pip install jupyter requests bs4 boto3 && \
     jupyter notebook -y --no-browser --generate-config --allow-root
 
