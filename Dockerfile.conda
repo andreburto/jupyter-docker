@@ -1,0 +1,20 @@
+# TODO: Pin down a version.
+FROM continuumio/anaconda3:latest
+
+WORKDIR /notebook
+
+# Make port 8888 available to the world outside this container
+EXPOSE 8888
+
+RUN conda update -n base -c defaults conda && \
+    conda create -n xeus-sqlite -y
+
+SHELL ["conda", "run", "-n", "xeus-sqlite", "/bin/bash", "-c"]
+
+RUN conda install xeus-sqlite notebook -c conda-forge -y && \
+    jupyter notebook -y --no-browser --generate-config --allow-root && \
+    conda install boto3 bs4 ipywidgets psycopg2 PyMySQL requests sqlite
+
+
+CMD ["conda", "run", "-vvv", "-n", "xeus-sqlite", "jupyter", "notebook", "-y", "--no-browser", "--ip", "0.0.0.0", \
+     "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]

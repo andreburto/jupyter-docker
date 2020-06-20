@@ -1,22 +1,50 @@
 #!/usr/bin/env bash
-# Run my Jupyter container. Build it if it doesn't exist.
+CONTAINER_NAMES="notebook postgres"
+
+function start {
+    for c in $CONTAINER_NAMES; do
+        let EXP_CONT=$EXP_CONT+1
+        if [[ "$(docker ps -a | grep $c)" != "" ]]; then let ACT_CONT=$ACT_CONT+1; fi
+    done
+    if [ $EXP_CONT -eq $ACT_CONT ]; then SUBCOMMAND="start"; else SUBCOMMAND="up --detach"; fi
+    docker-compose $SUBCOMMAND
+}
+
+function help {
+    echo "The following commands work:"
+    echo " "
+    echo "nb build  - Builds the images needed for the containers."
+    echo "nb start  - Starts the containers as services."
+    echo "nb stop   - Stops the container services."
+    echo "nb help   - Displays this help text."
+}
+
+# Jump to the directory from which we run everything
 cd $(dirname $0)
 
-IMAGE_NAME="andreburto/jupyter1"
-ENV_FILE="$(pwd)/.env"
-
-if [[ ! -f $ENV_FILE ]]; then
+if [[ ! -f "$(pwd)/.env" ]]; then
   echo "No environment file."
   exit 1
 fi
 
-if [[ ! -f $(pwd)/Dockerfile ]]; then
-  echo "Dockerfile missing."
+if [[ ! -f "$(pwd)/docker-compose.yml" ]]; then
+  echo "Docker compose file missing."
   exit 1
 fi
 
-docker build . -t $IMAGE_NAME:latest
+for d in $CONTAINER_NAMES; do mkdir -p $d; done
 
-mkdir -p notebook
-
-docker run -it --env-file=$ENV_FILE --mount type=bind,source=$(pwd)/notebook,target=/notebook -p 8888:8888 $IMAGE_NAME
+case $1 in
+    build)
+        docker-compose build
+        ;;
+    start)
+        $1
+        ;;
+    stop)
+        docker-compose stop
+        ;;
+    *)
+        help
+        ;;
+esac
