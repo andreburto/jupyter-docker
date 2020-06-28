@@ -12,9 +12,10 @@ RUN conda update -n base -c defaults conda && \
 SHELL ["conda", "run", "-n", "xeus-sqlite", "/bin/bash", "-c"]
 
 RUN conda install xeus-sqlite notebook -c conda-forge -y && \
-    jupyter notebook -y --no-browser --generate-config --allow-root && \
-    conda install boto3 bs4 ipywidgets psycopg2 PyMySQL requests sqlite
+    conda install boto3 bs4 ipywidgets psycopg2 PyMySQL requests sqlite git pip && \
+    pip install git+https://github.com/andreburto/brickulator.git@master#egg=brickulator && \
+    rm -Rf /tmp/ && \
+    jupyter notebook -y --no-browser --generate-config --allow-root
 
-
-CMD ["conda", "run", "-vvv", "-n", "xeus-sqlite", "jupyter", "notebook", "-y", "--no-browser", "--ip", "0.0.0.0", \
-     "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+CMD ["conda", "run", "-n", "xeus-sqlite", "/bin/bash", "-c", "jupyter", "notebook", "-y", "--no-browser", "--ip", \
+     "0.0.0.0", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
