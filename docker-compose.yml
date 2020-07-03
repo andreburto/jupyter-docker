@@ -10,15 +10,12 @@ services:
         condition: on-failure
     env_file: ./.env
     image: andreburto/jupyter2
-    networks:
-      - backend
     ports:
-      - 8888:8888
+    - 8888:8888
     volumes:
-      - type: bind
-        source: ./notebook
-        target: /notebook
-
+    - type: bind
+      source: ./notebook
+      target: /notebook
   postgres:
     deploy:
       replicas: 1

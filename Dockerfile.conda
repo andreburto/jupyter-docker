@@ -3,19 +3,18 @@ FROM continuumio/anaconda3:latest
 
 WORKDIR /notebook
 
-# Make port 8888 available to the world outside this container
 EXPOSE 8888
 
+COPY environment.yml /tmp/environment.yml
+
 RUN conda update -n base -c defaults conda && \
-    conda create -n xeus-sqlite -y
+    conda config --append channels conda-forge && \
+    conda env create -f /tmp/environment.yml
 
-SHELL ["conda", "run", "-n", "xeus-sqlite", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "xeus-sqlite", "bash", "-c"]
 
-RUN conda install xeus-sqlite notebook -c conda-forge -y && \
-    conda install boto3 bs4 ipywidgets psycopg2 PyMySQL requests sqlite git pip && \
-    pip install git+https://github.com/andreburto/brickulator.git@master#egg=brickulator && \
-    rm -Rf /tmp/ && \
-    jupyter notebook -y --no-browser --generate-config --allow-root
+RUN jupyter notebook -y --no-browser --generate-config --allow-root
 
-CMD ["conda", "run", "-n", "xeus-sqlite", "/bin/bash", "-c", "jupyter", "notebook", "-y", "--no-browser", "--ip", \
-     "0.0.0.0", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+CMD ["conda", "run", "-n", "xeus-sqlite", "jupyter", "notebook", "-y", "--no-browser", "--allow-root", "--ip", \
+     "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+

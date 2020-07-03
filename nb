@@ -6,7 +6,7 @@ function start {
         let EXP_CONT=$EXP_CONT+1
         if [[ "$(docker ps -a | grep $c)" != "" ]]; then let ACT_CONT=$ACT_CONT+1; fi
     done
-    if [ $EXP_CONT -eq $ACT_CONT ]; then SUBCOMMAND="start"; else SUBCOMMAND="up --detach"; fi
+    if [[ $EXP_CONT -eq $ACT_CONT ]]; then SUBCOMMAND="start"; else SUBCOMMAND="up --detach"; fi
     docker-compose $SUBCOMMAND
 }
 
