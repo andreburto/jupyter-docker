@@ -3,15 +3,16 @@ FROM continuumio/anaconda3:latest
 
 WORKDIR /notebook
 
-EXPOSE 8888
-
 COPY environment.yml /tmp/environment.yml
 
-RUN conda update -n base -c defaults conda && \
-    conda config --append channels conda-forge && \
+#RUN conda update -n base -c defaults conda && \
+RUN conda config --append channels conda-forge && \
     conda env create -f /tmp/environment.yml
 
 SHELL ["conda", "run", "-n", "xeus-sqlite", "bash", "-c"]
+
+RUN pip install git+https://github.com/andreburto/brickulator.git@master#egg=brickulator && \
+    pip install bokeh
 
 RUN jupyter notebook -y --no-browser --generate-config --allow-root
 

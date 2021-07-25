@@ -10,6 +10,8 @@ services:
         condition: on-failure
     env_file: ./.env
     image: andreburto/jupyter2
+    networks:
+      - backend
     ports:
       - 8888:8888
     volumes:
@@ -24,7 +26,9 @@ services:
     env_file: ./.env
     image: postgres:9.4
     networks:
-      - backend
+    - backend
+#    ports:
+#      - 5432:5432
     volumes:
       - type: bind
         source: ./postgres

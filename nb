@@ -36,7 +36,7 @@ for d in $CONTAINER_NAMES; do mkdir -p $d; done
 
 case $1 in
     build)
-        docker-compose build
+        docker-compose down && docker-compose build
         ;;
     start)
         $1
