@@ -4,18 +4,17 @@ FROM continuumio/anaconda3:latest
 WORKDIR /notebook
 
 COPY environment.yml /tmp/environment.yml
-
-#RUN conda update -n base -c defaults conda && \
-RUN conda config --append channels conda-forge && \
+RUN conda update -n base -c defaults conda && \
+    conda config --append channels conda-forge && \
     conda env create -f /tmp/environment.yml
 
 SHELL ["conda", "run", "-n", "xeus-sqlite", "bash", "-c"]
 
-RUN pip install git+https://github.com/andreburto/brickulator.git@master#egg=brickulator && \
-    pip install bokeh
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt && \
+    rm -Rf /tmp/ && \
+    jupyter notebook -y --no-browser --generate-config --allow-root
 
-RUN jupyter notebook -y --no-browser --generate-config --allow-root
-
-CMD ["conda", "run", "-n", "xeus-sqlite", "jupyter", "notebook", "-y", "--no-browser", "--allow-root", "--ip", \
-     "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+CMD ["conda", "run", "-n", "xeus-sqlite", "jupyter", "notebook", "-y", "--no-browser", "--allow-root", \
+     "--ip", "0.0.0.0", "--NotebookApp.token=''", "--NotebookApp.password=''"]
 

@@ -1,0 +1,8 @@
+bokeh
+boto3
+bs4
+flask
+numpy
+requests
+
+git+https://github.com/andreburto/brickulator.git@master#egg=brickulator

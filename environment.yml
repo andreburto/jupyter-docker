@@ -3,20 +3,12 @@ channels:
   - conda-forge
   - javascript
 dependencies:
-  - boto3
-#  - bokeh
-  - bs4
   - git
   - ipywidgets
   - nodejs
   - notebook
-  - numpy
-  - flask
   - psycopg2
   - PyMySQL
-  - python
-  - requests
+#  - python
   - sqlite
   - xeus-sqlite
-#  - pip:
-#    - git+https://github.com/andreburto/brickulator.git@master#egg=brickulator
