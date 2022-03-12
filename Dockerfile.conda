@@ -4,14 +4,17 @@ FROM continuumio/anaconda3:latest
 WORKDIR /notebook
 
 COPY environment.yml /tmp/environment.yml
+
 RUN conda update -n base -c defaults conda && \
     conda config --append channels conda-forge && \
-    conda env create -f /tmp/environment.yml
+    conda env create -f /tmp/environment.yml && \
+    conda install matplotlib
 
 SHELL ["conda", "run", "-n", "xeus-sqlite", "bash", "-c"]
 
 COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt && \
+
+RUN pip3 install -r /tmp/requirements.txt && \
     rm -Rf /tmp/ && \
     jupyter notebook -y --no-browser --generate-config --allow-root
 
