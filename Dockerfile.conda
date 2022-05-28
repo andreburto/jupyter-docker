@@ -1,6 +1,8 @@
 # TODO: Pin down a version.
 FROM continuumio/anaconda3:latest
 
+LABEL version=0.1
+
 WORKDIR /notebook
 
 COPY environment.yml /tmp/environment.yml

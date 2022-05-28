@@ -2,6 +2,7 @@ bokeh
 boto3
 bs4
 flask
+Markdown
 matplotlib
 numpy
 requests
